@@ -15,14 +15,14 @@ the surrounding rectangle of a text or image block.
 
 Assuming a typical book page layout, the identiﬁed text block width (multiple 
 columns summing up to one text block) plus the white margins should approximately 
-match the book page image width. Based on this assumption, the central hypothesis 
+match the book page image width. Based on this assumption, the hypothesis 
 is that if there is a signiﬁcant mismatch for several pages of the same book, 
 it can be interpreted as an indicator for possible cropping errors with text loss.
 
 This project shows the principle of approaching this kind of data processing 
-scenario by means of the MapReduce programming model. The HTML parsing using
-JSoup [2] is done in parallel in the Map phase and the subsequent 
-average text block width per page is done in the Reduce phase.
+scenario by means of the MapReduce programming model. The HTML parsing is done
+using JSoup [2] and is executed in parallel in the Map phase. Subsequently, the 
+average text block width per page is calculated in the Reduce phase.
 
 Data preparation
 ----------------
@@ -30,10 +30,7 @@ Data preparation
 First of all, dealing with lots of HTML files, means that we are facing 
 Hadoop’s “Small Files Problem” [3]. In brief, this is to say that the files we 
 want to process are too small for taking them directly as input for the Map 
-function. In fact, loading 1000 small files into HDFS - which by the way would 
-require quite some time - and defining them as input to our Hadoop Job would 
-let the Hadoop JobTracker create 1000 Map tasks. Given the task creation overhead 
-this would result in a bad processing performance.
+function. 
 
 One approach to overcome this is to put all the small files into one large 
 SequenceFile which is an input format that can be used to aggregate content 
@@ -57,22 +54,22 @@ and v1 be the value holding the content of the HTML ﬁle (data type:
 org.apache.hadoop.io.BytesWritable). The key-value pair (k1;v1) is the input of 
 the Map function shown in the following equation.
 
-    map(k1;v1) --> list(k1;v2) (1)
+    map(k1, v1) --> list(k1, v2)
 
 As a simple example, let us assume one key-value pair input with the page 
-identiﬁer 00001:html and the HTML ﬁle content as value as shown in the following 
+identiﬁer 00001.html and the HTML ﬁle content as value as shown in the following 
 example:
 
     ("00001.html", "<html>[content]</html>")
 
-The mapper will produce a list of key-value pairs, one keyvalue pair for each 
+The mapper will produce a list of key-value pairs, one key-value pair for each 
 text block the parser ﬁnds, as output. Assuming the parser ﬁnds two text blocks 
 with 1200 pixel and 1400 pixel width, the output list would be as shown in the
 next example:
 
     (("00001.html", 1200) --> ("00001.html", 1400)) 
 
-The Mapper outputs a list of key-value pairs list(k1, v2) with v2 being the text 
+The Mapper outputs a list of key-value pairs `list(k1, v2)` with v2 being the text 
 block width value and k1 the HTML page key simply repeated for each value. The 
 value is a string with coordinates, representing width and height of the block 
 element.
