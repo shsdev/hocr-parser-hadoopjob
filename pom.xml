@@ -8,10 +8,10 @@
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>tb-lsdr-hocrparser</artifactId>
+    <artifactId>hocr-parser-hadoopjob</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>tb-lsdr-hocrparser</name>
+    <name>hocr-parser-hadoopjob</name>
     <description>SCAPE TB LSDR hOCR parser</description>
     <properties>
         <scape.core.version>0.0.1-SNAPSHOT</scape.core.version>
