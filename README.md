@@ -49,9 +49,9 @@ in the subsequent MapReduce job which parses the HTML ﬁles using the Java HTML
 parser Jsoup in the Map function and calculates the average block width in the 
 Reduce function.
 
-Let k1 be the identiﬁer of the HTML ﬁle (data type: org.apache.hadoop.io.Text), 
-and v1 be the value holding the content of the HTML ﬁle (data type: 
-org.apache.hadoop.io.BytesWritable). The key-value pair (k1;v1) is the input of 
+Let `k1` be the identiﬁer of the HTML ﬁle (data type: `org.apache.hadoop.io.Text`), 
+and `v1` be the value holding the content of the HTML ﬁle (data type: 
+org.apache.hadoop.io.BytesWritable). The key-value pair `(k1;v1)` is the input of 
 the Map function shown in the following equation.
 
     map(k1, v1) --> list(k1, v2)
@@ -69,18 +69,18 @@ next example:
 
     (("00001.html", 1200) --> ("00001.html", 1400)) 
 
-The Mapper outputs a list of key-value pairs `list(k1, v2)` with v2 being the text 
-block width value and k1 the HTML page key simply repeated for each value. The 
+The Mapper outputs a list of key-value pairs `list(k1, v2)` with `v2` being the text 
+block width value and `k1` the HTML page key simply repeated for each value. The 
 value is a string with coordinates, representing width and height of the block 
 element.
 
-For each HTML page k1, the Reduce function aggregates all text block width values 
-list(v2):
+For each HTML page `k1`, the Reduce function aggregates all text block width values 
+`list(v2)`:
 
     reduce(k1, list(v2)) --> (k1,v3)
 
-During this step it sums up the list(v2) text block width values and calculates 
-the average width v3 (data type: org.apache.hadoop.io.LongWritable).
+During this step it sums up the `list(v2)` text block width values and calculates 
+the average width `v3` (data type: `org.apache.hadoop.io.LongWritable`).
 
 Related to the last example, this means that the Reduce function would calculate the 
 average width like follows:
